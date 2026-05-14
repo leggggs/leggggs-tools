@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's My Race? — Leggggs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f0ebe0; font-family: 'Special Elite', monospace; min-height: 100vh; padding: 3rem 1.5rem 4rem; }
+    .wrap { max-width: 640px; margin: 0 auto; }
+    .main-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: clamp(28px,6vw,44px); line-height: 1.05; color: #111; text-transform: uppercase; margin-bottom: 8px; }
+    .subtitle { font-size: 13px; color: #555; font-style: italic; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 3px solid #111; }
+    .q-block { margin-bottom: 1.75rem; }
+    .q-label { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #777; display: block; margin-bottom: 10px; }
+    .q-text { font-size: 15px; color: #111; margin-bottom: 12px; line-height: 1.5; }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .opt { font-family: 'Special Elite', monospace; font-size: 13px; background: transparent; border: 2px solid #ccc; padding: 9px 16px; cursor: pointer; color: #888; transition: all 0.12s; }
+    .opt:hover { border-color: #111; color: #111; background: #e8e2d5; }
+    .opt.selected { background: #111; color: #f0ebe0; border-color: #111; font-size: 14px; padding: 10px 18px; }
+    .text-input { font-family: 'Special Elite', monospace; font-size: 18px; border: none; border-bottom: 2px solid #111; background: transparent; padding: 6px 0 8px; color: #111; outline: none; width: 100%; }
+    .text-input::placeholder { color: #bbb; font-style: italic; }
+    .submit-btn { width: 100%; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: 2px; text-transform: uppercase; background: #111; color: #f0ebe0; border: none; padding: 16px; cursor: pointer; margin-top: 1.5rem; transition: opacity 0.15s; }
+    .submit-btn:hover { opacity: 0.85; }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .loading { display: none; text-align: center; padding: 2.5rem; font-size: 14px; color: #888; font-style: italic; }
+    .loading.visible { display: block; }
+    .dots::after { content: ''; animation: dots 1.4s infinite; }
+    @keyframes dots { 0%,20%{content:'.'} 40%{content:'..'} 60%,100%{content:'...'} }
+    .result { display: none; margin-top: 1.5rem; }
+    .result.visible { display: block; }
+    .result-card { background: #fff; border: 2px solid #111; padding: 2rem 1.75rem; position: relative; text-align: center; margin-bottom: 2rem; }
+    .result-card::after { content: ''; position: absolute; top: 5px; left: 5px; right: -5px; bottom: -5px; background: #111; z-index: -1; }
+    .result-eyebrow { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+    .result-race { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: clamp(36px,10vw,68px); line-height: 1; color: #111; text-transform: uppercase; word-break: break-word; margin-bottom: 12px; }
+    .result-oneliner { font-size: 15px; color: #555; font-style: italic; line-height: 1.5; }
+    .zine-copy { font-size: 14px; color: #333; line-height: 1.9; border-top: 1px dashed #ccc; padding-top: 1.5rem; margin-bottom: 1.5rem; }
+    .zine-copy p { margin-bottom: 1rem; }
+    .zine-copy p:last-child { margin-bottom: 0; }
+    .again-btn { width: 100%; font-family: 'Special Elite', monospace; font-size: 14px; background: transparent; border: 1.5px solid #111; padding: 11px; cursor: pointer; color: #111; transition: background 0.15s; }
+    .again-btn:hover { background: #e8e2d5; }
+    .footer { text-align: center; margin-top: 2rem; font-size: 11px; color: #bbb; letter-spacing: 3px; text-transform: uppercase; }
+    .stamp { display: inline-block; border: 1.5px solid #ddd; padding: 4px 12px; font-size: 10px; letter-spacing: 3px; color: #ccc; text-transform: uppercase; transform: rotate(-1.5deg); margin-top: 10px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="main-title">What's My Race?</h1>
+  <p class="subtitle">Answer these. We'll tell you what race to host. Spoiler: you're hosting your own race.</p>
+
+  <div id="form-section">
+    <div class="q-block">
+      <span class="q-label">Question 1</span>
+      <p class="q-text">Where do you actually run?</p>
+      <div class="options" data-q="location">
+        <button class="opt" data-val="streets">streets</button>
+        <button class="opt" data-val="trails">trails</button>
+        <button class="opt" data-val="wherever">wherever</button>
+        <button class="opt" data-val="industrial zones">industrial zones</button>
+        <button class="opt" data-val="parking lots">parking lots</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 2</span>
+      <p class="q-text">Do you like people and crowds?</p>
+      <div class="options" data-q="crowd">
+        <button class="opt" data-val="just me">just me</button>
+        <button class="opt" data-val="a few weirdos">a few weirdos</button>
+        <button class="opt" data-val="the more the messier">the more the messier</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 3</span>
+      <p class="q-text">Do you get hives thinking about "group runs"?</p>
+      <div class="options" data-q="groupruns">
+        <button class="opt" data-val="yes, physically">yes, physically</button>
+        <button class="opt" data-val="only if there's a waiver involved">only if there's a waiver</button>
+        <button class="opt" data-val="I am the group run problem">I am the group run problem</button>
+        <button class="opt" data-val="no I love them">no, I love them</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 4</span>
+      <p class="q-text">What's a good prize for finishing a race?</p>
+      <div class="options" data-q="prize">
+        <button class="opt" data-val="nothing">nothing</button>
+        <button class="opt" data-val="bragging rights">bragging rights</button>
+        <button class="opt" data-val="a belt buckle">a belt buckle</button>
+        <button class="opt" data-val="a medal">a medal</button>
+        <button class="opt" data-val="a beer">a beer</button>
+        <button class="opt" data-val="self-satisfaction">self-satisfaction</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 5</span>
+      <p class="q-text">Do you want a finisher medal?</p>
+      <div class="options" data-q="medal">
+        <button class="opt" data-val="no">no</button>
+        <button class="opt" data-val="yes">yes</button>
+        <button class="opt" data-val="I really don't give a shit">I really don't give a shit</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 6</span>
+      <p class="q-text">How much do you love paying entrance fees?</p>
+      <div class="options" data-q="fees">
+        <button class="opt" data-val="I don't pay entrance fees">I don't</button>
+        <button class="opt" data-val="it's an investment not a purchase">it's an investment, not a purchase</button>
+        <button class="opt" data-val="fuck fees — I bandit the course">fuck fees — I bandit the course</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 7</span>
+      <p class="q-text">Do you buy a new fit for race day?</p>
+      <div class="options" data-q="fit">
+        <button class="opt" data-val="yes always">yes always</button>
+        <button class="opt" data-val="no">no</button>
+        <button class="opt" data-val="I run in whatever I was already wearing">I run in whatever I was already wearing</button>
+        <button class="opt" data-val="I don't know what a fit is in this context">I don't know what a fit is</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 8</span>
+      <p class="q-text">What's your relationship with rules?</p>
+      <div class="options" data-q="rules">
+        <button class="opt" data-val="I follow them">I follow them</button>
+        <button class="opt" data-val="I bend them">I bend them</button>
+        <button class="opt" data-val="what rules">what rules</button>
+      </div>
+    </div>
+    <div class="q-block">
+      <span class="q-label">Question 9</span>
+      <p class="q-text">Name your favorite person to run with.</p>
+      <input class="text-input" id="buddy-input" type="text" placeholder="first name is fine" maxlength="40" autocomplete="off" />
+    </div>
+    <button class="submit-btn" id="submit-btn" onclick="submitQuiz()">Find My Race</button>
+  </div>
+
+  <div class="loading" id="loading-el"><span class="dots">Scouting your course</span></div>
+
+  <div class="result" id="result-el">
+    <div class="result-card">
+      <p class="result-eyebrow">Your race is:</p>
+      <div class="result-race" id="result-race"></div>
+      <p class="result-oneliner" id="result-oneliner"></p>
+    </div>
+    <div class="zine-copy" id="result-body"></div>
+    <button class="again-btn" onclick="resetQuiz()">↻ Take it again</button>
+  </div>
+
+  <div class="footer">
+    <div>Leggggs</div>
+    <div class="stamp">A Running Zine</div>
+  </div>
+</div>
+
+<script>
+const answers = {};
+document.querySelectorAll('.options').forEach(group => {
+  group.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      answers[group.dataset.q] = btn.dataset.val;
+    });
+  });
+});
+
+async function submitQuiz() {
+  const buddy = document.getElementById('buddy-input').value.trim() || 'your one friend';
+  answers.buddy = buddy;
+  const btn = document.getElementById('submit-btn');
+  const loading = document.getElementById('loading-el');
+  const result = document.getElementById('result-el');
+  const formSection = document.getElementById('form-section');
+  btn.disabled = true;
+  loading.classList.add('visible');
+  const summary = Object.entries(answers).map(([k,v]) => k+': '+v).join('\n');
+  try {
+    const response = await fetch('/api/race', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ answers: summary, buddy })
+    });
+    const parsed = await response.json();
+    if (!response.ok) throw new Error(parsed.error || 'failed');
+    document.getElementById('result-race').textContent = parsed.race;
+    document.getElementById('result-oneliner').textContent = parsed.oneliner;
+    const bodyEl = document.getElementById('result-body');
+    bodyEl.innerHTML = '';
+    parsed.body.split('\n').filter(p => p.trim()).forEach(para => {
+      const p = document.createElement('p');
+      p.textContent = para;
+      bodyEl.appendChild(p);
+    });
+    loading.classList.remove('visible');
+    formSection.style.display = 'none';
+    result.classList.add('visible');
+  } catch(err) {
+    loading.classList.remove('visible');
+    document.getElementById('result-race').textContent = 'THE GRAVEL ERROR INVITATIONAL';
+    document.getElementById('result-oneliner').textContent = 'Something broke. Host it anyway.';
+    const bodyEl = document.getElementById('result-body');
+    bodyEl.innerHTML = '<p>Distance: however far you feel like going. No course. No timing. No one watching. Just you and the vague sense that this counts.</p><p>The rule: if you have to ask whether you finished, you did.</p><p>Text '+buddy+' and say "we\'re doing a race." Don\'t explain further. Chalk your start line on the nearest sidewalk. Show up.</p>';
+    formSection.style.display = 'none';
+    result.classList.add('visible');
+    btn.disabled = false;
+  }
+}
+
+function resetQuiz() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  document.getElementById('buddy-input').value = '';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('form-section').style.display = 'block';
+  document.getElementById('result-el').classList.remove('visible');
+  document.getElementById('loading-el').classList.remove('visible');
+}
+</script>
+</body>
+</html>
