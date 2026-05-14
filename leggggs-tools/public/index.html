@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's Your "Give Yourself Running A Nickname" Nickname — Leggggs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Special+Elite&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f0ebe0;
+      font-family: 'Special Elite', monospace;
+      min-height: 100vh;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    .wrap {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .masthead {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 3px solid #111;
+      padding-bottom: 1.5rem;
+    }
+
+    .main-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 6vw, 44px);
+      line-height: 1.05;
+      color: #111;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #555;
+      font-style: italic;
+    }
+
+    .form-card {
+      background: #fff;
+      border: 2px solid #111;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .form-card::after {
+      content: '';
+      position: absolute;
+      top: 5px; left: 5px; right: -5px; bottom: -5px;
+      background: #111;
+      z-index: -1;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #777;
+      margin-bottom: 10px;
+    }
+
+    .name-input {
+      width: 100%;
+      font-family: 'Special Elite', monospace;
+      font-size: 22px;
+      border: none;
+      border-bottom: 2px solid #111;
+      background: transparent;
+      padding: 6px 0 8px;
+      color: #111;
+      outline: none;
+    }
+
+    .name-input::placeholder { color: #bbb; font-style: italic; }
+
+    .generate-btn {
+      width: 100%;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: #111;
+      color: #f0ebe0;
+      border: none;
+      padding: 16px;
+      cursor: pointer;
+      margin-top: 1.25rem;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .generate-btn:hover { background: #2a2a2a; }
+    .generate-btn:active { transform: scale(0.985) translateY(1px); }
+    .generate-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      font-size: 14px;
+      color: #888;
+      font-style: italic;
+    }
+    .loading.visible { display: block; }
+
+    .dots::after {
+      content: '';
+      animation: dots 1.4s infinite;
+    }
+    @keyframes dots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
+    }
+
+    .result-card {
+      background: #fff;
+      border: 2px solid #111;
+      padding: 2.25rem 1.75rem;
+      display: none;
+      position: relative;
+      text-align: center;
+    }
+
+    .result-card.visible { display: block; }
+
+    .result-card::after {
+      content: '';
+      position: absolute;
+      top: 5px; left: 5px; right: -5px; bottom: -5px;
+      background: #111;
+      z-index: -1;
+    }
+
+    .result-eyebrow {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .result-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(48px, 13vw, 88px);
+      line-height: 0.95;
+      color: #111;
+      text-transform: uppercase;
+      word-break: break-word;
+      margin-bottom: 1.25rem;
+    }
+
+    .result-sardonic {
+      font-size: 14px;
+      color: #444;
+      font-style: italic;
+      line-height: 1.6;
+      border-top: 1px dashed #ccc;
+      border-bottom: 1px dashed #ccc;
+      padding: 14px 0;
+      margin-bottom: 1.25rem;
+    }
+
+    .result-bio {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.75;
+      text-align: left;
+    }
+
+    .again-btn {
+      display: none;
+      width: 100%;
+      font-family: 'Special Elite', monospace;
+      font-size: 14px;
+      background: transparent;
+      border: 1.5px solid #111;
+      padding: 11px;
+      cursor: pointer;
+      margin-top: 1.25rem;
+      letter-spacing: 1px;
+      color: #111;
+      transition: background 0.15s;
+    }
+    .again-btn:hover { background: #e8e2d5; }
+    .again-btn.visible { display: block; }
+
+    .footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 11px;
+      color: #bbb;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .stamp {
+      display: inline-block;
+      border: 1.5px solid #ddd;
+      padding: 4px 12px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #ccc;
+      text-transform: uppercase;
+      transform: rotate(-1.5deg);
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="masthead">
+      <h1 class="main-title">What's Your<br>"Give Yourself Running<br>A Nickname" Nickname</h1>
+      <p class="subtitle">Enter your name. Receive the nickname you would absolutely give yourself.</p>
+    </div>
+
+    <div class="form-card">
+      <label class="field-label" for="nameInput">Put in your full name</label>
+      <input class="name-input" id="nameInput" type="text" placeholder="e.g. Dave Kowalski" maxlength="60" autocomplete="off" />
+      <button class="generate-btn" id="generateBtn" onclick="generateName()">Find My Nickname</button>
+    </div>
+
+    <div class="loading" id="loadingEl">
+      <span class="dots">Calculating your elite runner persona</span>
+    </div>
+
+    <div class="result-card" id="resultEl">
+      <p class="result-eyebrow">We're not going to call you:</p>
+      <div class="result-name" id="resultName"></div>
+      <p class="result-sardonic" id="resultSardonic"></p>
+      <p class="result-bio" id="resultBio"></p>
+    </div>
+
+    <button class="again-btn" id="againBtn" onclick="generateName()">↻ Generate again</button>
+
+    <div class="footer">
+      <div>Leggggs</div>
+      <div class="stamp">A Running Zine</div>
+    </div>
+
+  </div>
+
+  <script>
+    async function generateName() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) { document.getElementById('nameInput').focus(); return; }
+
+      const btn = document.getElementById('generateBtn');
+      const loading = document.getElementById('loadingEl');
+      const result = document.getElementById('resultEl');
+      const againBtn = document.getElementById('againBtn');
+
+      btn.disabled = true;
+      result.classList.remove('visible');
+      againBtn.classList.remove('visible');
+      loading.classList.add('visible');
+
+      try {
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+
+        const parsed = await response.json();
+        if (!response.ok) throw new Error(parsed.error || 'Failed');
+
+        document.getElementById('resultName').textContent = parsed.name;
+        document.getElementById('resultSardonic').textContent = parsed.sardonic;
+        document.getElementById('resultBio').textContent = parsed.bio;
+
+        loading.classList.remove('visible');
+        result.classList.add('visible');
+        againBtn.classList.add('visible');
+
+      } catch (err) {
+        loading.classList.remove('visible');
+        document.getElementById('resultName').textContent = "GRAVEL ERROR";
+        document.getElementById('resultSardonic').textContent = "No one is going to ask how you got that name. But you're going to tell them anyway.";
+        document.getElementById('resultBio').textContent = "Something broke. The true outsider runner needs no generator anyway. Lace up.";
+        result.classList.add('visible');
+      }
+
+      btn.disabled = false;
+    }
+
+    document.getElementById('nameInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') generateName();
+    });
+  </script>
+</body>
+</html>
