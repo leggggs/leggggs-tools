@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5',,
         max_tokens: 1000,
         system: `You are the Leggggs "Give Yourself Running A Nickname" Nickname Generator. Leggggs is a DIY, punk, outsider running zine with zero patience for performative running culture. Your job: take a person's real name and generate the cringey, self-serious nickname they would absolutely give themselves if they were THAT GUY in running culture. Return ONLY valid JSON with fields: name, sardonic, bio.`,
         messages: [{ role: 'user', content: `My name is: ${name.trim()}. Give me my runner nickname as JSON with fields: name (ALL CAPS nickname), sardonic (one dry mean line about it), bio (2-3 sentences written by the guy himself, in character).` }]
