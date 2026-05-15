@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Brand Builder — Leggggs</title>
+  <title>The Brand Builder — by Leggggs</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     @font-face {
       font-family: 'Realce';
@@ -15,7 +15,7 @@
       font-weight: 900;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #f0ebe0; font-family: 'Special Elite', monospace; min-height: 100vh; padding: 3rem 1.5rem 4rem; }
+    body { background: #f0ebe0; font-family: 'Inter', sans-serif; min-height: 100vh; padding: 3rem 1.5rem 4rem; }
     .wrap { max-width: 680px; margin: 0 auto; }
 
     .main-title { font-family: 'Realce', sans-serif; font-size: clamp(28px,6vw,48px); line-height: 1; color: #111; text-transform: uppercase; margin-bottom: 8px; }
@@ -25,10 +25,10 @@
     .q-label { display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #777; margin-bottom: 6px; }
     .q-text { font-size: 14px; color: #111; margin-bottom: 10px; line-height: 1.5; }
     .options { display: flex; flex-wrap: wrap; gap: 8px; }
-    .opt { font-family: 'Special Elite', monospace; font-size: 13px; background: transparent; border: 2px solid #ccc; padding: 8px 14px; cursor: pointer; color: #888; transition: all 0.12s; }
+    .opt { font-family: 'Inter', sans-serif; font-size: 13px; background: transparent; border: 2px solid #ccc; padding: 8px 14px; cursor: pointer; color: #888; transition: all 0.12s; }
     .opt:hover { border-color: #111; color: #111; background: #e8e2d5; }
     .opt.selected { background: #111; color: #f0ebe0; border-color: #111; padding: 9px 16px; }
-    .text-input { width: 100%; font-family: 'Special Elite', monospace; font-size: 15px; border: none; border-bottom: 2px solid #111; background: transparent; padding: 6px 0 8px; color: #111; outline: none; }
+    .text-input { width: 100%; font-family: 'Inter', sans-serif; font-size: 15px; border: none; border-bottom: 2px solid #111; background: transparent; padding: 6px 0 8px; color: #111; outline: none; }
     .text-input::placeholder { color: #bbb; font-style: italic; }
 
     .submit-btn { width: 100%; font-family: 'Realce', sans-serif; font-size: 22px; letter-spacing: 2px; text-transform: uppercase; background: #111; color: #f0ebe0; border: none; padding: 16px; cursor: pointer; margin-top: 1.5rem; transition: opacity 0.15s; }
@@ -60,7 +60,7 @@
     .disclaimer { font-size: 12px; color: #aaa; font-style: italic; border-top: 1px solid #eee; padding-top: 1rem; margin-top: 1rem; line-height: 1.6; }
 
     .btn-row { display: flex; gap: 8px; margin-top: 1rem; }
-    .share-btn, .again-btn { display: none; flex: 1; font-family: 'Special Elite', monospace; font-size: 13px; padding: 11px; cursor: pointer; border: 1.5px solid #111; transition: background 0.15s; }
+    .share-btn, .again-btn { display: none; flex: 1; font-family: 'Inter', sans-serif; font-size: 13px; padding: 11px; cursor: pointer; border: 1.5px solid #111; transition: background 0.15s; }
     .share-btn { background: #111; color: #f0ebe0; }
     .share-btn:hover { background: #333; }
     .again-btn { background: transparent; color: #111; }
@@ -71,11 +71,17 @@
     .stamp { display: inline-block; border: 1.5px solid #ddd; padding: 4px 12px; font-size: 10px; letter-spacing: 3px; color: #ccc; text-transform: uppercase; transform: rotate(-1.5deg); margin-top: 10px; }
 
     /* Share card */
-    .share-card { position: fixed; left: -9999px; top: 0; width: 600px; background: #111; padding: 48px; font-family: 'Special Elite', monospace; }
+    .share-card { position: fixed; left: -9999px; top: 0; width: 600px; background: #111; padding: 48px; font-family: 'Inter', sans-serif; }
     .share-card-logo { width: 140px; margin-bottom: 28px; display: block; }
     .share-card-eyebrow { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #666; margin-bottom: 10px; }
     .share-card-name { font-family: 'Realce', sans-serif; font-size: 60px; line-height: 0.95; color: #f0ebe0; text-transform: uppercase; word-break: break-word; margin-bottom: 20px; }
     .share-card-tagline { font-size: 15px; color: #888; font-style: italic; line-height: 1.5; border-top: 1px solid #2a2a2a; padding-top: 16px; }
+
+    .lgx-cta { text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #ccc; }
+    .lgx-cta-text { font-family: 'Inter', sans-serif; font-size: 14px; color: #111; margin-bottom: 4px; }
+    .lgx-cta-sub { font-size: 13px; color: #888; font-style: italic; }
+    .lgx-cta-link { color: #111; text-decoration: underline; }
+    .lgx-cta-link:hover { opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -89,8 +95,8 @@
       <p class="q-text">What are you building?</p>
       <div class="options" data-q="type">
         <button class="opt" data-val="a run club">run club</button>
-        <button class="opt" data-val="a running zine">zine</button>
-        <button class="opt" data-val="an apparel brand">apparel brand</button>
+        <button class="opt" data-val="a running publication">zine</button>
+        <button class="opt" data-val="a clothing/wears brand">apparel brand</button>
         <button class="opt" data-val="a race or event series">race / event</button>
         <button class="opt" data-val="a running community or platform">community / platform</button>
         <button class="opt" data-val="something else in the running space">something else</button>
@@ -154,6 +160,11 @@
       <button class="share-btn" id="share-btn" onclick="saveImage()">&#8595; Save as image</button>
       <button class="again-btn" id="again-btn" onclick="resetForm()">&#8635; Build another brand</button>
     </div>
+  </div>
+
+  <div class="lgx-cta">
+    <p class="lgx-cta-text">Hey. You're part of it.</p>
+    <p class="lgx-cta-sub">Tag <a class="lgx-cta-link" href="https://instagram.com/_leggggs" target="_blank">@_leggggs</a> on Instagram.</p>
   </div>
 
   <div class="footer">
