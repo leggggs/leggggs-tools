@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What's Your “Give Yourself A Running Nickname" Nickname — Leggggs</title>
+  <title>What's Your “Give Yourself A Running Nickname" Nickname? by Leggggs</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     @font-face {
       font-family: 'Realce';
@@ -20,7 +20,7 @@
 
     body {
       background: #f0ebe0;
-      font-family: 'Special Elite', monospace;
+      font-family: 'Inter', sans-serif;
       min-height: 100vh;
       padding: 3rem 1.5rem 4rem;
     }
@@ -77,7 +77,7 @@
 
     .name-input {
       width: 100%;
-      font-family: 'Special Elite', monospace;
+      font-family: 'Inter', sans-serif;
       font-size: 22px;
       border: none;
       border-bottom: 2px solid #111;
@@ -190,7 +190,7 @@
     .share-btn, .again-btn {
       display: none;
       flex: 1;
-      font-family: 'Special Elite', monospace;
+      font-family: 'Inter', sans-serif;
       font-size: 13px;
       padding: 11px;
       cursor: pointer;
@@ -234,7 +234,7 @@
       width: 600px;
       background: #111;
       padding: 48px;
-      font-family: 'Special Elite', monospace;
+      font-family: 'Inter', sans-serif;
     }
 
     .share-card-logo {
@@ -269,6 +269,12 @@
       border-top: 1px solid #2a2a2a;
       padding-top: 20px;
     }
+
+    .lgx-cta { text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #ccc; }
+    .lgx-cta-text { font-family: 'Inter', sans-serif; font-size: 14px; color: #111; margin-bottom: 4px; }
+    .lgx-cta-sub { font-size: 13px; color: #888; font-style: italic; }
+    .lgx-cta-link { color: #111; text-decoration: underline; }
+    .lgx-cta-link:hover { opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -286,7 +292,7 @@
   </div>
 
   <div class="loading" id="loadingEl">
-    <span class="dots">Calculating your elite runner persona</span>
+    <span class="dots">Figuring out your persona, big guy</span>
   </div>
 
   <div class="result-card" id="resultEl">
@@ -357,7 +363,7 @@ async function generateName() {
     loading.classList.remove('visible');
     document.getElementById('resultName').textContent = "GRAVEL ERROR";
     document.getElementById('resultSardonic').textContent = "No one is going to ask how you got that name. But you're going to tell them anyway.";
-    document.getElementById('resultBio').textContent = "Something broke. The true outsider runner needs no generator anyway. Lace up.";
+    document.getElementById('resultBio').textContent = "Something broke. The true outsider runner needs no generator anyway.";
     document.getElementById('shareCardName').textContent = "GRAVEL ERROR";
     document.getElementById('shareCardSardonic').textContent = "No one is going to ask how you got that name. But you're going to tell them anyway.";
     result.classList.add('visible');
