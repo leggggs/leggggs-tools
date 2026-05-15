@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What's Your “Give Yourself A Running Nickname" Nickname? by Leggggs</title>
+  <title>What's Your “Give Yourself A Running Nickname" Nickname? - by Leggggs</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -292,7 +292,7 @@
   </div>
 
   <div class="loading" id="loadingEl">
-    <span class="dots">Figuring out your persona, big guy</span>
+    <span class="dots">Calculating your elite runner persona</span>
   </div>
 
   <div class="result-card" id="resultEl">
@@ -305,6 +305,11 @@
   <div class="btn-row">
     <button class="share-btn" id="shareBtn" onclick="saveImage()">↓ Save as image</button>
     <button class="again-btn" id="againBtn" onclick="generateName()">↻ Generate again</button>
+  </div>
+
+  <div class="lgx-cta">
+    <p class="lgx-cta-text">Hey. You're part of it.</p>
+    <p class="lgx-cta-sub">Tag <a class="lgx-cta-link" href="https://instagram.com/_leggggs" target="_blank">@_leggggs</a> on Instagram.</p>
   </div>
 
   <div class="footer">
@@ -363,7 +368,7 @@ async function generateName() {
     loading.classList.remove('visible');
     document.getElementById('resultName').textContent = "GRAVEL ERROR";
     document.getElementById('resultSardonic').textContent = "No one is going to ask how you got that name. But you're going to tell them anyway.";
-    document.getElementById('resultBio').textContent = "Something broke. The true outsider runner needs no generator anyway.";
+    document.getElementById('resultBio').textContent = "Something broke. The true outsider runner needs no generator anyway. Lace up.";
     document.getElementById('shareCardName').textContent = "GRAVEL ERROR";
     document.getElementById('shareCardSardonic').textContent = "No one is going to ask how you got that name. But you're going to tell them anyway.";
     result.classList.add('visible');
