@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>"I Will Never Run Again" - The Injured Runner Reassurer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f0ebe0;
+    --bg2: #e4dfd4;
+    --ink: #111;
+    --ink2: #333;
+    --ink3: #777;
+    --accent: #C4472A;
+    --accent2: #E8D5C4;
+    --border: rgba(17,17,17,0.15);
+    --card: #fff;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --radius: 2px;
+    --radius-lg: 4px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    padding: 2.5rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .header-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .header-title em {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .header-sub {
+    font-size: 0.75rem;
+    color: var(--ink3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+  }
+
+  /* Main layout */
+  .main { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* Views */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* Intro */
+  .intro-text {
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: var(--ink2);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--accent);
+    background: var(--card);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-lg);
+    position: relative;
+  }
+  .intro-text::after {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px; right: -4px; bottom: -4px;
+    background: var(--ink);
+    border-radius: var(--radius-lg);
+    z-index: -1;
+  }
+  .intro-note {
+    font-size: 0.85rem;
+    color: var(--ink3);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  /* Form */
+  .form-section { margin-bottom: 2rem; }
+  .form-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .form-hint {
+    font-size: 0.78rem;
+    color: var(--ink3);
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  textarea, input[type="text"] {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 1rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.6;
+  }
+  textarea:focus, input[type="text"]:focus { border-color: var(--accent); }
+  textarea { min-height: 90px; }
+
+  /* Pill selects */
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+  .pill {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 400;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    background: var(--card);
+    color: var(--ink2);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+  .pill.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .pill.multi.selected { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+  /* Tone cards */
+  .tone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 0.5rem; }
+  .tone-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    background: var(--card);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .tone-card:hover { border-color: var(--accent); }
+  .tone-card.selected { border-color: var(--accent); background: #FDF4F1; }
+  .tone-card .tone-name { font-weight: 500; font-size: 0.9rem; color: var(--ink); margin-bottom: 3px; }
+  .tone-card .tone-desc { font-size: 0.75rem; color: var(--ink3); line-height: 1.4; }
+  .tone-card .tone-icon { font-size: 1.4rem; margin-bottom: 6px; }
+
+  /* Submit */
+  .submit-btn {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.01em;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .submit-btn:hover { background: #A83820; }
+  .submit-btn:disabled { background: var(--ink3); cursor: not-allowed; }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.75rem 0;
+  }
+
+  /* Loading */
+  .loading-state { text-align: center; padding: 3rem 1rem; }
+  .loading-spinner {
+    width: 36px; height: 36px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-words {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink3);
+    font-size: 1rem;
+  }
+
+  /* Response */
+  .response-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .response-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .response-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .resp-tag {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    background: var(--bg2);
+    border-radius: 99px;
+    color: var(--ink2);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .response-body {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--ink2);
+  }
+  .response-body p { margin-bottom: 1.2rem; }
+  .response-body p:last-child { margin-bottom: 0; }
+
+  .truths-section { margin: 1.75rem 0; }
+  .truths-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink3);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .truths-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 480px) { .truths-grid { grid-template-columns: 1fr; } }
+  .truth-item {
+    background: var(--bg2);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+  .truth-item::before { content: "✓  "; color: var(--accent); font-weight: 700; }
+
+  .reflection-block {
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: 1rem 1.25rem;
+    margin: 1.75rem 0;
+    background: var(--card);
+  }
+  .reflection-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .reflection-text {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink2);
+    line-height: 1.8;
+  }
+
+  .restart-btn {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--ink3);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 1rem;
+  }
+  .restart-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  .error-msg {
+    background: #FDF0EE;
+    border: 1px solid #F0C0B8;
+    color: var(--accent);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .error-msg.visible { display: block; }
+
+  @media (max-width: 480px) {
+    .tone-grid { grid-template-columns: 1fr; }
+    .main { padding: 1.5rem 1rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1 class="header-title"><em>Still Running</em></h1>
+  <span class="header-sub">For when you're temporarily not</span>
+</header>
+
+<main class="main">
+
+  <!-- INTAKE VIEW -->
+  <div class="view active" id="view-intake">
+
+    <p class="intro-text">
+      Running can get you you through life. And then one day you're hurt and have to stop, and suddenly you're standing naked in front of your mirror wondering who you are without it. What's the point of life? We're not here to make you feel better. THat's your job. This is just a place to vent for a sec.
+    </p>
+    <p class="intro-note">Fill in what you know. Skip what you don't. This isn't fixing anything. We just wanna tell you something.</p>
+
+    <div class="error-msg" id="error-msg">Tell us your injury and what tone you want to hear.</div>
+
+    <div class="form-section">
+      <label class="form-label" for="injury-input">What's the injury?</label>
+      <span class="form-hint">Doesn't have to be clinical. "My foot hates me" is fine.</span>
+      <textarea id="injury-input" placeholder="e.g. plantar fasciitis, stress fracture, IT band being dramatic again..."></textarea>
+    </div>
+
+    <div class="form-section">
+      <label class="form-label">How long are you off running?</label>
+      <div class="pills" id="pills-time" data-single="true">
+        <button class="pill" data-value="1-2 weeks">1–2 weeks</button>
+        <button class="pill" data-value="3-4 weeks">3–4 weeks</button>
+        <button class="pill" data-value="1-3 months">1–3 months</button>
+        <button class="pill" data-value="3-6 months">3–6 months</button>
+        <button class="pill" data-value="6+ months">6+ months</button>
+        <button class="pill" data-value="no idea yet">No idea yet</button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label class="form-label">What are you doing to stay moving? <span style="color:var(--ink3);font-weight:400">(pick all that apply)</span></label>
+      <div class="pills" id="pills-cross" data-single="false">
+        <button class="pill multi" data-value="cycling">Cycling</button>
+        <button class="pill multi" data-value="swimming">Swimming</button>
+        <button class="pill multi" data-value="strength training">Strength training</button>
+        <button class="pill multi" data-value="yoga / mobility work">Yoga / mobility</button>
+        <button class="pill multi" data-value="walking">Walking</button>
+        <button class="pill multi" data-value="pool running">Pool running</button>
+        <button class="pill multi" data-value="absolutely nothing right now">Absolutely nothing right now</button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label class="form-label">What actually hurts about this? <span style="color:var(--ink3);font-weight:400">(pick all that apply)</span></label>
+      <div class="pills" id="pills-hard" data-single="false">
+        <button class="pill multi" data-value="losing fitness I worked hard for">Losing fitness</button>
+        <button class="pill multi" data-value="my routine is completely gone">Gone routine</button>
+        <button class="pill multi" data-value="a race I had to DNS or might miss">A race</button>
+        <button class="pill multi" data-value="my identity as a runner">My identity</button>
+        <button class="pill multi" data-value="the community and social side of running">The community</button>
+        <button class="pill multi" data-value="not knowing when I'll be back">The uncertainty</button>
+        <button class="pill multi" data-value="feeling like I'm falling behind everyone else">Falling behind</button>
+        <button class="pill multi" data-value="the mental health side of things">My mental health</button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label class="form-label">Anything else you want to say about where you're at?</label>
+      <span class="form-hint">Vent here. You know you wanna.</span>
+      <textarea id="extra-input" placeholder="I was supposed to run my first marathon in 6 weeks. I'm furious. I've been training for 8 months..."></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <div class="form-section">
+      <label class="form-label">How do you want this to hit you?</label>
+      <div class="tone-grid" id="tone-grid">
+        <div class="tone-card" data-value="gentle">
+          <div class="tone-icon">🤍</div>
+          <div class="tone-name">Gentle</div>
+          <div class="tone-desc">Soft, warm, gives you space</div>
+        </div>
+        <div class="tone-card" data-value="honest">
+          <div class="tone-icon">👁</div>
+          <div class="tone-name">Honest</div>
+          <div class="tone-desc">Real and direct, no fluff</div>
+        </div>
+        <div class="tone-card" data-value="no-nonsense with dark humor">
+          <div class="tone-icon">⚡</div>
+          <div class="tone-name">No-nonsense</div>
+          <div class="tone-desc">Blunt, a little funny, still caring</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Show me something true →</button>
+
+  </div>
+
+  <!-- LOADING VIEW -->
+  <div class="view" id="view-loading">
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <p class="loading-words" id="loading-words">Finding the right words...</p>
+    </div>
+  </div>
+
+  <!-- RESPONSE VIEW -->
+  <div class="view" id="view-response">
+    <div class="response-header">
+      <h2 class="response-title">Here's what's true right now</h2>
+    </div>
+    <div class="response-tags" id="response-tags"></div>
+    <hr class="divider">
+    <div id="response-content"></div>
+    <hr class="divider">
+    <button class="restart-btn" onclick="restart()">← Start over / different injury</button>
+  </div>
+
+</main>
+
+<script>
+const TONE_VOICE = {
+  "gentle": `You write with warmth and compassion. Your sentences are calm and unhurried. You acknowledge the pain without minimizing it. You speak like a close friend who knows when to be quiet and when to say the one true thing. Never cheerful, never peppy — just present and kind.`,
+  "honest": `You write with directness and clarity. You don't sugarcoat, but you're not cruel. You name things plainly. Your sentences have weight. You might use a dry observation or two, but the dominant register is serious and real. You sound like someone who has been through things and doesn't need to perform optimism.`,
+  "no-nonsense with dark humor": `You write like a person who deals with hard things by being funny about them — but the humor always has a foundation of genuine care underneath. Your sentences roll long and then land short and sharp. You use profanity when it earns its place. You are self-aware, a little chaotic, and deeply human. You sound like: "running is just running and a way to connect with other like-minded people, as well as myself, and honestly, help me get through some tough times, and also, i fucking hate plantar fasciitis." That energy. You are NOT a running coach. You are NOT a wellness influencer. You are the friend who gets it.`
+};
+
+const LOADING_PHRASES = [
+  "Finding the right words...",
+  "Not writing a motivational poster...",
+  "Thinking, not performing...",
+  "Keeping it real...",
+  "No toxic positivity incoming..."
+];
+
+function getSelected(groupId) {
+  return [...document.querySelectorAll(`#${groupId} .pill.selected`)].map(p => p.dataset.value);
+}
+
+function getTone() {
+  const card = document.querySelector('#tone-grid .tone-card.selected');
+  return card ? card.dataset.value : null;
+}
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function cyclePhrases() {
+  let i = 0;
+  const el = document.getElementById('loading-words');
+  return setInterval(() => {
+    i = (i + 1) % LOADING_PHRASES.length;
+    el.textContent = LOADING_PHRASES[i];
+  }, 1800);
+}
+
+async function handleSubmit() {
+  const injury = document.getElementById('injury-input').value.trim();
+  const tone = getTone();
+  const errorEl = document.getElementById('error-msg');
+
+  if (!injury || !tone) {
+    errorEl.classList.add('visible');
+    return;
+  }
+  errorEl.classList.remove('visible');
+
+  const timeOff = getSelected('pills-time')[0] || 'unknown';
+  const crossTraining = getSelected('pills-cross');
+  const hardParts = getSelected('pills-hard');
+  const extra = document.getElementById('extra-input').value.trim();
+
+  showView('view-loading');
+  const phraseInterval = cyclePhrases();
+
+  const userMessage = buildPrompt(injury, timeOff, crossTraining, hardParts, extra, tone);
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: buildSystemPrompt(tone),
+        messages: [{ role: "user", content: userMessage }]
+      })
+    });
+
+    clearInterval(phraseInterval);
+
+    const data = await response.json();
+    const raw = data.content?.find(b => b.type === 'text')?.text || '';
+
+    let parsed;
+    try {
+      const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      parsed = JSON.parse(cleaned);
+    } catch(e) {
+      parsed = { main: raw, truths: [], reflection: '' };
+    }
+
+    renderResponse(parsed, injury, timeOff, crossTraining, tone);
+    showView('view-response');
+
+  } catch (err) {
+    clearInterval(phraseInterval);
+    showView('view-intake');
+    document.getElementById('error-msg').textContent = 'Something went wrong connecting to the API. Try again.';
+    document.getElementById('error-msg').classList.add('visible');
+  }
+}
+
+function buildSystemPrompt(tone) {
+  return `You are the voice of "Still Running," a reassurance tool for injured runners. Your job is NOT to motivate. Your job is to say something TRUE.
+
+VOICE: ${TONE_VOICE[tone]}
+
+PHILOSOPHY:
+- You do not tell people how to feel. You reflect things back.
+- You do not say "you've got this" or "stay positive" or any variation.
+- You name the actual loss — which is usually identity, routine, or community — not just the physical injury.
+- You end with a question for the runner to sit with. Not an answer. A question.
+- You are not a medical professional and never give medical advice.
+- Runners are more than their Strava profiles. You remind them of this without being preachy about it.
+
+RESPONSE FORMAT: Return a valid JSON object with exactly these fields:
+{
+  "main": "3-4 paragraphs of the main reassurance response as a single string, with paragraphs separated by \\n\\n",
+  "truths": ["4 short factual true statements, each under 15 words"],
+  "reflection": "One question for the runner to sit with. Not rhetorical — genuinely open."
+}
+
+Return ONLY the JSON object. No preamble, no backticks, no explanation.`;
+}
+
+function buildPrompt(injury, timeOff, crossTraining, hardParts, extra, tone) {
+  const parts = [
+    `Injury: ${injury}`,
+    `Time off running: ${timeOff}`,
+    crossTraining.length ? `What they're doing to stay active: ${crossTraining.join(', ')}` : `Cross-training: nothing right now`,
+    hardParts.length ? `What actually hurts about this: ${hardParts.join(', ')}` : null,
+    extra ? `In their own words: "${extra}"` : null
+  ].filter(Boolean);
+
+  return `Here is what this runner shared:\n\n${parts.join('\n')}\n\nTone requested: ${tone}\n\nWrite a response for them.`;
+}
+
+function renderResponse(parsed, injury, timeOff, crossTraining, tone) {
+  const tagsEl = document.getElementById('response-tags');
+  tagsEl.innerHTML = '';
+  const tags = [injury, timeOff, ...(crossTraining.length ? crossTraining.slice(0,2) : [])].filter(Boolean);
+  tags.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'resp-tag';
+    span.textContent = t;
+    tagsEl.appendChild(span);
+  });
+
+  const contentEl = document.getElementById('response-content');
+  contentEl.innerHTML = '';
+
+  const bodyDiv = document.createElement('div');
+  bodyDiv.className = 'response-body';
+  (parsed.main || '').split('\n\n').forEach(para => {
+    if (para.trim()) {
+      const p = document.createElement('p');
+      p.textContent = para.trim();
+      bodyDiv.appendChild(p);
+    }
+  });
+  contentEl.appendChild(bodyDiv);
+
+  if (parsed.truths && parsed.truths.length) {
+    const truthsSection = document.createElement('div');
+    truthsSection.className = 'truths-section';
+    truthsSection.innerHTML = `<p class="truths-label">What's still true</p>`;
+    const grid = document.createElement('div');
+    grid.className = 'truths-grid';
+    parsed.truths.forEach(t => {
+      const item = document.createElement('div');
+      item.className = 'truth-item';
+      item.textContent = t;
+      grid.appendChild(item);
+    });
+    truthsSection.appendChild(grid);
+    contentEl.appendChild(truthsSection);
+  }
+
+  if (parsed.reflection) {
+    const reflBlock = document.createElement('div');
+    reflBlock.className = 'reflection-block';
+    reflBlock.innerHTML = `<p class="reflection-label">Something to sit with</p><p class="reflection-text">${parsed.reflection}</p>`;
+    contentEl.appendChild(reflBlock);
+  }
+}
+
+function restart() {
+  document.getElementById('injury-input').value = '';
+  document.getElementById('extra-input').value = '';
+  document.querySelectorAll('.pill.selected').forEach(p => p.classList.remove('selected'));
+  document.querySelectorAll('.tone-card.selected').forEach(c => c.classList.remove('selected'));
+  document.getElementById('error-msg').classList.remove('visible');
+  showView('view-intake');
+  window.scrollTo(0,0);
+}
+
+// Pill interactions
+document.querySelectorAll('.pills').forEach(group => {
+  const isSingle = group.dataset.single === 'true';
+  group.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      if (isSingle) {
+        group.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+      } else {
+        pill.classList.toggle('selected');
+      }
+    });
+  });
+});
+
+// Tone cards
+document.querySelectorAll('.tone-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.tone-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  });
+});
+</script>
+</body>
+</html>
