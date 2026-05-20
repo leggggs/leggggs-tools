@@ -352,45 +352,101 @@
     border-radius: 2px;
   }
 
-  /* Share card — hidden, used for image export only */
+  /* Share card — hidden, used for image export only — 1080x1920 @ 2x = 540x960px div */
   .share-card {
     position: fixed;
     left: -9999px;
     top: 0;
-    width: 600px;
-    background: #fff;
-    padding: 48px;
+    width: 540px;
+    height: 960px;
+    background: #f0ebe0;
+    padding: 64px 56px;
+    font-family: var(--font-body);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .sc-top { display: flex; flex-direction: column; gap: 0; }
+  .sc-headline-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink3);
+    margin-bottom: 10px;
     font-family: var(--font-body);
   }
-  .share-card-eyebrow {
+  .sc-headline {
+    font-family: var(--font-display);
+    font-size: 72px;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+  .sc-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--accent);
+    margin: 28px 0;
+  }
+  .sc-why-label {
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.16em;
+    color: var(--ink3);
+    margin-bottom: 8px;
+  }
+  .sc-injury {
+    font-family: var(--font-display);
+    font-size: 38px;
+    letter-spacing: 0.04em;
     color: var(--accent);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 36px;
+  }
+  .sc-hope-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink3);
     margin-bottom: 12px;
   }
-  .share-card-injury {
-    font-family: var(--font-display);
-    font-size: 36px;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-    line-height: 1.1;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-  }
-  .share-card-body {
-    font-size: 14px;
+  .sc-hope-text {
+    font-size: 16px;
     line-height: 1.7;
-    color: #444;
+    color: var(--ink2);
     border-left: 3px solid var(--accent);
-    padding-left: 16px;
-    margin-bottom: 32px;
+    padding-left: 18px;
   }
-  .share-card-footer {
+  .sc-bottom { display: flex; flex-direction: column; gap: 12px; }
+  .sc-outro {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink3);
+    line-height: 1.5;
+  }
+  .sc-brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(17,17,17,0.15);
+    padding-top: 16px;
+  }
+  .sc-brand-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+  .sc-brand-url {
     font-size: 11px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #bbb;
+    color: var(--ink3);
   }
 
   .error-msg {
@@ -540,12 +596,24 @@
   <div class="footer-stamp">A Running Zine</div>
 </div>
 
-<!-- Hidden share card for image export -->
+<!-- Hidden share card for image export — 9:16 IG format -->
 <div class="share-card" id="shareCard">
-  <p class="share-card-eyebrow">Still Running</p>
-  <div class="share-card-injury" id="shareCardInjury"></div>
-  <div class="share-card-body" id="shareCardBody"></div>
-  <p class="share-card-footer">leggggs — a running zine</p>
+  <div class="sc-top">
+    <p class="sc-headline-label">Still Running</p>
+    <div class="sc-headline">I Will<br>Never<br>Run<br>Again</div>
+    <div class="sc-divider"></div>
+    <p class="sc-why-label">Here's why</p>
+    <div class="sc-injury" id="scInjury"></div>
+    <p class="sc-hope-label">But there's hope</p>
+    <div class="sc-hope-text" id="scHope"></div>
+  </div>
+  <div class="sc-bottom">
+    <p class="sc-outro">One injury (probably) won't define me.</p>
+    <div class="sc-brand-row">
+      <span class="sc-brand-name">Leggggs</span>
+      <span class="sc-brand-url">leggggs-tools.vercel.app</span>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -749,21 +817,31 @@ document.querySelectorAll('.tone-card').forEach(card => {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 async function saveImage() {
-  const injury = document.getElementById('injury-input').value.trim() || 'injured runner';
-  const firstPara = document.querySelector('#response-content .response-body p');
-  const reflection = document.querySelector('.reflection-text');
+  const injury = document.getElementById('injury-input').value.trim() || 'my injury';
 
-  document.getElementById('shareCardInjury').textContent = injury;
-  document.getElementById('shareCardBody').textContent = reflection
-    ? reflection.textContent
-    : (firstPara ? firstPara.textContent.slice(0, 200) + '...' : '');
+  // Build a 2-3 sentence summary from the response paragraphs
+  const paras = [...document.querySelectorAll('#response-content .response-body p')];
+  let summary = '';
+  if (paras.length >= 2) {
+    // Take the most grounded paragraph (usually 2nd) and trim to ~2 sentences
+    const text = paras[1].textContent;
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+    summary = sentences.slice(0, 3).join(' ').trim();
+  } else if (paras.length === 1) {
+    summary = paras[0].textContent.slice(0, 280).trim() + '...';
+  }
+
+  document.getElementById('scInjury').textContent = injury.toUpperCase();
+  document.getElementById('scHope').textContent = summary;
 
   const card = document.getElementById('shareCard');
   const canvas = await html2canvas(card, {
-    scale: 2,
+    scale: 2,          // renders at 1080x1920
     useCORS: true,
-    backgroundColor: '#ffffff',
-    logging: false
+    backgroundColor: '#f0ebe0',
+    logging: false,
+    width: 540,
+    height: 960
   });
 
   const link = document.createElement('a');
