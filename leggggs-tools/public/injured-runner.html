@@ -293,6 +293,26 @@
     line-height: 1.8;
   }
 
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+  .save-btn {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.65rem 1.25rem;
+    background: var(--ink);
+    color: #fff;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.15s;
+    flex: 1;
+  }
+  .save-btn:hover { background: #333; }
+
   .restart-btn {
     font-family: var(--font-body);
     font-size: 0.85rem;
@@ -303,9 +323,75 @@
     padding: 0.6rem 1.25rem;
     cursor: pointer;
     transition: all 0.15s;
-    margin-top: 1rem;
+    flex: 1;
   }
   .restart-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Footer */
+  .footer {
+    border-top: 1px dashed var(--border);
+    text-align: center;
+    padding: 2.5rem 1rem 3rem;
+    margin-top: 1rem;
+  }
+  .footer-name {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 0.5rem;
+  }
+  .footer-stamp {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #bbb;
+    border: 1px solid #ccc;
+    padding: 4px 14px;
+    border-radius: 2px;
+  }
+
+  /* Share card — hidden, used for image export only */
+  .share-card {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    width: 600px;
+    background: #fff;
+    padding: 48px;
+    font-family: var(--font-body);
+  }
+  .share-card-eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .share-card-injury {
+    font-family: var(--font-display);
+    font-size: 36px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .share-card-body {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    border-left: 3px solid var(--accent);
+    padding-left: 16px;
+    margin-bottom: 32px;
+  }
+  .share-card-footer {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #bbb;
+  }
 
   .error-msg {
     background: #FDF0EE;
@@ -329,8 +415,8 @@
 
 <header class="header">
   <div class="header-inner">
-    <h1 class="header-title"><em>I Will Never Run Again</em></h1>
-    <span class="header-sub">The Injured Runner Reassurance System</span>
+    <h1 class="header-title"><em>Still Running</em></h1>
+    <span class="header-sub">For when you're temporarily not</span>
   </div>
 </header>
 
@@ -420,7 +506,7 @@
       </div>
     </div>
 
-    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Maybe I'll hate this less →</button>
+    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">Show me something true →</button>
 
   </div>
 
@@ -441,10 +527,26 @@
     <hr class="divider">
     <div id="response-content"></div>
     <hr class="divider">
-    <button class="restart-btn" onclick="restart()">← Start over / different injury</button>
+    <div class="btn-row">
+      <button class="save-btn" onclick="saveImage()">↓ Save as image</button>
+      <button class="restart-btn" onclick="restart()">↻ Start over</button>
+    </div>
   </div>
 
 </main>
+
+<div class="footer">
+  <div class="footer-name">Leggggs</div>
+  <div class="footer-stamp">A Running Zine</div>
+</div>
+
+<!-- Hidden share card for image export -->
+<div class="share-card" id="shareCard">
+  <p class="share-card-eyebrow">Still Running</p>
+  <div class="share-card-injury" id="shareCardInjury"></div>
+  <div class="share-card-body" id="shareCardBody"></div>
+  <p class="share-card-footer">leggggs — a running zine</p>
+</div>
 
 <script>
 const TONE_VOICE = {
@@ -643,6 +745,33 @@ document.querySelectorAll('.tone-card').forEach(card => {
     card.classList.add('selected');
   });
 });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+async function saveImage() {
+  const injury = document.getElementById('injury-input').value.trim() || 'injured runner';
+  const firstPara = document.querySelector('#response-content .response-body p');
+  const reflection = document.querySelector('.reflection-text');
+
+  document.getElementById('shareCardInjury').textContent = injury;
+  document.getElementById('shareCardBody').textContent = reflection
+    ? reflection.textContent
+    : (firstPara ? firstPara.textContent.slice(0, 200) + '...' : '');
+
+  const card = document.getElementById('shareCard');
+  const canvas = await html2canvas(card, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: '#ffffff',
+    logging: false
+  });
+
+  const link = document.createElement('a');
+  const slug = injury.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 30);
+  link.download = 'still-running-' + slug + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
 </script>
 </body>
 </html>
