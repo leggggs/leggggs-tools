@@ -500,29 +500,15 @@ async function handleSubmit() {
   const userMessage = buildPrompt(injury, timeOff, crossTraining, hardParts, extra, tone);
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("/api/injured-runner", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        system: buildSystemPrompt(tone),
-        messages: [{ role: "user", content: userMessage }]
-      })
+      body: JSON.stringify({ injury, timeOff, crossTraining, hardParts, extra, tone })
     });
 
     clearInterval(phraseInterval);
 
-    const data = await response.json();
-    const raw = data.content?.find(b => b.type === 'text')?.text || '';
-
-    let parsed;
-    try {
-      const cleaned = raw.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      parsed = JSON.parse(cleaned);
-    } catch(e) {
-      parsed = { main: raw, truths: [], reflection: '' };
-    }
+    const parsed = await response.json();
 
     renderResponse(parsed, injury, timeOff, crossTraining, tone);
     showView('view-response');
