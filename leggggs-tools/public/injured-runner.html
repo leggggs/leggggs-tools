@@ -36,6 +36,10 @@
   .header {
     padding: 2.5rem 2rem 1.5rem;
     border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 720px;
+    margin: 0 auto;
     display: flex;
     align-items: baseline;
     gap: 1rem;
@@ -324,8 +328,10 @@
 <body>
 
 <header class="header">
-  <h1 class="header-title"><em>Still Running</em></h1>
-  <span class="header-sub">For when you're temporarily not</span>
+  <div class="header-inner">
+    <h1 class="header-title"><em>I Will Never Run Again</em></h1>
+    <span class="header-sub">The Injured Runner Reassurance System</span>
+  </div>
 </header>
 
 <main class="main">
