@@ -31,7 +31,8 @@ RESPONSE FORMAT: Return a valid JSON object with exactly these fields:
 {
   "main": "3-4 paragraphs of the main reassurance response as a single string, with paragraphs separated by \\n\\n",
   "truths": ["4 short factual true statements, each under 15 words"],
-  "reflection": "One question for the runner to sit with. Not rhetorical — genuinely open."
+  "reflection": "One question for the runner to sit with. Not rhetorical — genuinely open.",
+  "share_line": "One sentence, first person, that the runner could share as their own realization. Not advice. Not hope. A pivot — something like 'I realized that even when all hope seems lost, maybe this just means I was poised for a triumphant return instead of wallowing in mediocrity.' Specific to their injury and situation. Sounds like something a real person would post, not a wellness brand."
 }
 
 Return ONLY the JSON object. No preamble, no backticks, no explanation.`;
