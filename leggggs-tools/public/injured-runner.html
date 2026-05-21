@@ -727,6 +727,7 @@ async function handleSubmit() {
     const parsed = await response.json();
 
     renderResponse(parsed, injury, timeOff, crossTraining, tone);
+    window._lastShareLine = parsed.share_line || '';
     showView('view-response');
 
   } catch (err) {
@@ -754,7 +755,8 @@ RESPONSE FORMAT: Return a valid JSON object with exactly these fields:
 {
   "main": "3-4 paragraphs of the main reassurance response as a single string, with paragraphs separated by \\n\\n",
   "truths": ["4 short factual true statements, each under 15 words"],
-  "reflection": "One question for the runner to sit with. Not rhetorical — genuinely open."
+  "reflection": "One question for the runner to sit with. Not rhetorical — genuinely open.",
+  "share_line": "One sentence, first person, that the runner could share as their own realization. Not advice. Not hope. A pivot — something like 'I realized that even when all hope seems lost, maybe this just means I was poised for a triumphant return instead of wallowing in mediocrity.' Specific to their injury and situation. Sounds like something a real person would post, not a wellness brand."
 }
 
 Return ONLY the JSON object. No preamble, no backticks, no explanation.`;
@@ -859,24 +861,12 @@ document.querySelectorAll('.tone-card').forEach(card => {
 async function saveImage() {
   const injury = document.getElementById('injury-input').value.trim() || 'my injury';
 
-  // Build a 2-3 sentence summary from the response paragraphs
-  const paras = [...document.querySelectorAll('#response-content .response-body p')];
-  let summary = '';
-  if (paras.length >= 2) {
-    // Take the most grounded paragraph (usually 2nd) and trim to ~2 sentences
-    const text = paras[1].textContent;
-    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-    summary = sentences.slice(0, 3).join(' ').trim();
-  } else if (paras.length === 1) {
-    summary = paras[0].textContent.slice(0, 280).trim() + '...';
-  }
-
   document.getElementById('scInjury').textContent = injury.toUpperCase();
-  document.getElementById('scHope').textContent = summary;
+  document.getElementById('scHope').textContent = window._lastShareLine || '';
 
   const card = document.getElementById('shareCard');
   const canvas = await html2canvas(card, {
-    scale: 2,          // renders at 1080x1920
+    scale: 2,
     useCORS: true,
     backgroundColor: '#f0ebe0',
     logging: false,
